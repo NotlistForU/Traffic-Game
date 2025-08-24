@@ -1,9 +1,11 @@
-// posição inicial do player
+// posição inicial do obstaculo
+
 let trafficRow = 0;
 let trafficCol = 1;
 
 // cria o carro
-function createTrafficCar() {
+function createTrafficCar() {  
+
     let celulaTraffic = document.querySelector(`td[data-row="${trafficRow}"][data-col="${trafficCol}"] .cell`);
 
     let imgTraffic = document.createElement("img");
