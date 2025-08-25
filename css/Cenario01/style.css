@@ -5,35 +5,154 @@ html, body {
     background: #0f1115;
     }
 
-    .wrap {
-        min-height: 100%;
-        display: grid;
-        place-items: center;
-        padding: 16px;
-    }
+    /* Container principal do jogo */
+.wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #1a1a1a; /* asfalto */
+    
+    /* Faixas centrais e bordas */
+    background-image:
+        /* Bordas laterais */
+        linear-gradient(to right, #555 0 5px, transparent 5px calc(100% - 5px), #555 calc(100% - 5px) 100%),
+        /* Faixas divisórias */
+        repeating-linear-gradient(
+            to right,
+            transparent 0 calc(var(--lane-width) - 4px),
+            rgba(255, 255, 255, 0.9) calc(var(--lane-width) - 4px) calc(var(--lane-width) - 2px),
+            transparent calc(var(--lane-width) - 2px) var(--lane-width)
+        ),
+        /* Textura leve */
+        repeating-linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.03) 0 1px,
+            transparent 1px 4px
+        );
+    
+    background-size:
+        100% 100%, /* bordas */
+        calc(var(--lane-width) * var(--lanes)) 100%, /* faixas */
+        100% 100%; /* textura */
+    
+    background-repeat: no-repeat, repeat, repeat;
+}
+
+/* Variáveis para controlar número de pistas e largura */
+:root {
+    --lanes: 3; /* número de pistas */
+    --lane-width: 120px; /* largura de cada pista */
+}
+
 
 table {
+    width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
 }
 
 td {
-    width: 64px;   /* cada célula quadrada */
-    height: 64px;
+    width: var(--lane-width);
+    height: 100px;
     padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+td.borda-esquerda,
+td.borda-direita {
+    width: var(--border-width);
+    background-color: #555; /* só pra diferenciar visualmente */
 }
 
 .cell {
-    width: 100%;
-    height: 100%;
-    border: 1px solid #333; /* só pra você enxergar a grade */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.carro {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* ajusta a imagem na célula */
+
+@keyframes moverCarro {
+  from { transform: translateY(0); }
+  to { transform: translateY(100%); }
 }
-.player {
-    width: 100%;
+
+.carro, .player {
+    width: 80px;   /* tamanho fixo */
+    height: 80px;
+    object-fit: contain;
+    position: absolute;
+}
+.pista {
+    width: var(--lane-width);
+    background-color: #1a1a1a; /* asfalto */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Faixa central tracejada */
+@keyframes moverFaixa {
+    from { background-position-y: 0; }
+    to { background-position-y: 40px; }
+}
+
+.pista:not(.ultima)::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px; /* largura da faixa */
     height: 100%;
-    object-fit: contain; /* centraliza na célula */
+    background-image: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.9) 0 20px, /* pedaço branco */
+        transparent 20px 40px           /* espaço */
+    );
+    transform: translateX(-50%);
+    animation: moverFaixa 0.3s linear infinite;
+}
+
+/* Textura leve no asfalto */
+.pista::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.05) 0 1px,
+        transparent 1px 4px
+    );
+    opacity: 0.2;
+    pointer-events: none;
+}
+
+.pista::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background-image: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.9) 0 20px,
+        transparent 20px 40px
+    );
+    transform: translateX(-50%);
+    animation: moverFaixa 0.3s linear infinite;
+}
+.pista.primeira::before {
+    transform: none;
+    left: 0;
+    background-image: none;
+    background-color: white;
+}
+
+.pista.ultima::after {
+    background-image:
+        linear-gradient(to right, transparent calc(100% - 4px), white 4px),
+        repeating-linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.05) 0 1px,
+            transparent 1px 4px
+        );
+    opacity: 1;
 }

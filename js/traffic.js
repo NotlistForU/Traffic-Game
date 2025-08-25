@@ -58,7 +58,6 @@ function spawnCarrosCaminhoGarantido(numPistas, linha) {
         const carro = document.createElement("img");
         carro.src = "public/Carros/trafficCar.png";
         carro.alt = "TrafficCar";
-        carro.style.transform = "rotate(270deg)";
         carro.classList.add("carro");
         celula.appendChild(carro);
       }
@@ -100,9 +99,10 @@ function moverCarros() {
 }
 
 // Inicializa cenário
-criarCenario(3);
-inicializarCaminho(3);
+criarCenario(5);
+
+inicializarCaminho(5);
 setInterval(() => {
   moverCarros();
-  spawnCarrosCaminhoGarantido(3, 0); // sempre gera no topo
+  spawnCarrosCaminhoGarantido(5, 0); // sempre gera no topo
 }, 500);

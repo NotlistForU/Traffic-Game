@@ -1,4 +1,4 @@
-let numPistas = 3; // defina conforme o cenário criado
+let numPistas = 5; // defina conforme o cenário criado
 let numLinhas = 12; // total de linhas da tabela
 
 let playerRow = numLinhas - 1; // última linha
