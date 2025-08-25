@@ -31,4 +31,3 @@ function criarCenario(numPistas, numLinhas = 12) {
   wrap.innerHTML = ""; // limpa cenário anterior
   wrap.appendChild(tabela);
 }
-criarCenario(10);
